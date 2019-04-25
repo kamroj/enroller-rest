@@ -21,7 +21,14 @@ public class MeetingService {
 		return connector.getSession().createCriteria(Meeting.class).list();
 	}
 
-	public Meeting findByTitle(String title) {
+	public Meeting findByTitle(long title) {
 		return (Meeting) connector.getSession().get(Meeting.class, title);
+	}
+
+	public Meeting add(Meeting meeting) {
+		Transaction transaction = connector.getSession().beginTransaction();
+		connector.getSession().save(meeting);
+		transaction.commit();
+		return meeting;
 	}
 }

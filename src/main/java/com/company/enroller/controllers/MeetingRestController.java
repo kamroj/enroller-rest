@@ -18,50 +18,23 @@ public class MeetingRestController {
     MeetingService meetingService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<?> getTitle() {
+    public ResponseEntity<?> getTitles() {
         Collection<Meeting> meetings = meetingService.getAll();
-        return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
+        return new ResponseEntity<>(meetings, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<?> getTitle(@PathVariable("id") String title) {
-//        Meeting meeting = meetingService.findByTitle(title);
-//        if (meeting == null) {
-//            return new ResponseEntity(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
-//    }
-//
-//    @RequestMapping(value = "", method = RequestMethod.POST)
-//    public ResponseEntity<?> registerParticipant(@RequestBody Meeting meeting) {
-//        Meeting foundParticipant = meetingService.findByLogin(meeting.getLogin());
-//        if(foundParticipant != null) {
-//            return new ResponseEntity<>("Unable to create. A participant with login " +
-//                    meeting.getLogin() + " already exist.", HttpStatus.CONFLICT);
-//        }
-//        meetingService.add(meeting);
-//        return new ResponseEntity<>(meeting, HttpStatus.CREATED);
-//    }
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-//    public ResponseEntity<?> deleteParticipent(@PathVariable("id") String login) {
-//        Meeting foundParticipant = meetingService.findByLogin(login);
-//        if (foundParticipant == null) {
-//            return new ResponseEntity(HttpStatus.NOT_FOUND);
-//        }
-//        meetingService.delete(foundParticipant);
-//        return new ResponseEntity<Participant>(HttpStatus.NO_CONTENT);
-//    }
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity<?> update(@PathVariable("id") String login, @RequestBody Meeting updatedParticipant) {
-//        Meeting participant = meetingService.findByLogin(login);
-//        if(participant == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//
-//        participant.setPassword(updatedParticipant.getPassword());
-//        meetingService.update(participant);
-//        return new ResponseEntity<>(participant, HttpStatus.OK);
-//    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> getTitle(@PathVariable("id") long index) {
+        Meeting meeting = meetingService.findByTitle(index);
+        if (meeting == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(meeting, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<?> addMeeting(@RequestBody Meeting meeting) {
+        meetingService.add(meeting);
+        return new ResponseEntity<>(meeting, HttpStatus.CREATED);
+    }
 }
